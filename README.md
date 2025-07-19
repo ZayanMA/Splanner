@@ -1,0 +1,2 @@
+# Splanner
+Student Planner
