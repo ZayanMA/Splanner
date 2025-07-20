@@ -16,6 +16,7 @@ from tasks.views import TaskViewSet
 from courses.views import CourseViewSet
 from notes.views import NoteViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from users.views import RegisterView 
 
 
 router = DefaultRouter()
@@ -30,5 +31,6 @@ urlpatterns = [
     # Auth
     path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/auth/register/', RegisterView.as_view(), name='auth_register'),
     
 ]
