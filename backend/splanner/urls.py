@@ -7,7 +7,7 @@
 ################################################
 # File history
 ################################################
-# 1.0   ZayanMA     initial commit
+# 1.0   ZayanMA    initial commit
 
 from django.contrib import admin
 from django.urls import path, include
@@ -15,6 +15,7 @@ from rest_framework.routers import DefaultRouter
 from tasks.views import TaskViewSet
 from courses.views import CourseViewSet
 from notes.views import NoteViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 router = DefaultRouter()
@@ -25,4 +26,9 @@ router.register(r'notes', NoteViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+
+    # Auth
+    path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
 ]
