@@ -1,12 +1,5 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/backend/splanner-venv/bin/python",
-  "python.analysis.extraPaths": [
-    "${workspaceFolder}",
-    "${workspaceFolder}/backend"
-  ],
-  "python.analysis.autoImportCompletions": true,
-"python.languageServer": "Jedi",
-"files.associations": {
+  "files.associations": {
     "*.css": "tailwindcss"
   },
   "tailwindCSS.classAttributes": [

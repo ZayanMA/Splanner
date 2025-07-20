@@ -1,33 +1,38 @@
 "use client";
-import Link from "next/link";
 import { useLogout } from "@/hooks/useLogout";
 import { useAuth } from "@/hooks/useAuth";
+import { Button, Navbar, NavbarBrand, NavbarCollapse, NavbarLink, NavbarToggle } from "flowbite-react";
 
 export default function Header() {
   const logout = useLogout();
   const { authenticated } = useAuth();
 
   return (
-    <header className="flex justify-between items-center p-4 bg-gray-800 shadow">
-      <nav className="flex space-x-6">
-        {authenticated && (
-          <>
-            <Link href="/dashboard" className="hover:underline">Dashboard</Link>
-            <Link href="/tasks" className="hover:underline">Tasks</Link>
-            <Link href="/courses" className="hover:underline">Courses</Link>
-            <Link href="/notes" className="hover:underline">Notes</Link>
-          </>
-        )}
-      </nav>
-    {authenticated && (
-      <button
-        onClick={logout}
-        className="text-red-600 hover:underline"
-        aria-label="Logout"
-      >
-        Logout
-      </button>
-    )}
+    <header>
+        <Navbar fluid rounded>
+            <NavbarBrand href="/">
+                <img src="/splanner.svg" alt="Splanner Logo" className="mr-3 h-6 sm:h-9" />
+                <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Splanner</span>
+            </NavbarBrand>
+            <div className="flex md:order-2">
+            {authenticated && (
+                <Button onClick={logout} aria-label="Logout" className="mr-2">
+                Logout
+                </Button>
+            )}
+            <NavbarToggle />
+            </div>
+            <NavbarCollapse>
+            {authenticated && (
+                <>
+                <NavbarLink href="/dashboard">Dashboard</NavbarLink>
+                <NavbarLink href="/tasks">Tasks</NavbarLink>
+                <NavbarLink href="/courses">Courses</NavbarLink>
+                <NavbarLink href="/notes">Notes</NavbarLink>
+                </>
+            )}
+            </NavbarCollapse>
+        </Navbar>
     </header>
   );
 }
