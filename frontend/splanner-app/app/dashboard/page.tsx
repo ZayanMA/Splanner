@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import api from "@/lib/api";
+import TaskModal from "@/components/TaskModal"; 
 
 type Task = {
   id: number;
@@ -16,6 +17,7 @@ export default function Dashboard() {
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showCreateEditModal, setShowCreateEditModal] = useState(false);  // useState to track visibility of create / edit popup
 
   useEffect(() => {
     async function fetchTasks() {
@@ -57,6 +59,21 @@ export default function Dashboard() {
           ))}
         </ul>
       )}
+      <button
+        onClick={() => setShowCreateEditModal(true)}
+        className="fixed bottom-6 right-6 bg-blue-600 text-white w-14 h-14 rounded-full text-3xl shadow-lg hover:bg-blue-700"
+        >
+        +
+        </button>
+      {showCreateEditModal && (
+        <TaskModal
+            mode="create"
+            onClose={() => setShowCreateEditModal(false)}
+            onSuccess={(newTask) => {
+            
+            }}
+        />
+        )}
     </div>
   );
 }
