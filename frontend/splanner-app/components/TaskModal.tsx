@@ -2,13 +2,6 @@
 import { useForm } from "react-hook-form";
 import api from "@/lib/api";
 
-type Task = {
-  id?: number;
-  title: string;
-  due_date: string;
-  priority: "low" | "medium" | "high";
-  tags: string[];
-};
 
 export default function TaskModal({
   mode,
@@ -56,32 +49,35 @@ export default function TaskModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white dark:bg-gray-900 text-black dark:text-white p-6 rounded-2xl w-full max-w-md shadow-xl transition-all duration-300">
+        <h2 className="text-2xl font-semibold mb-6">
           {isEdit ? "Edit Task" : "Create Task"}
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <input
               {...register("title", { required: true })}
               placeholder="Title"
-              className="w-full border p-2 rounded"
+              className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors.title && <p className="text-red-500 text-sm">Title is required</p>}
+            {errors.title && <p className="text-sm text-red-500 mt-1">Title is required</p>}
           </div>
 
           <div>
             <input
               {...register("due_date", { required: true })}
               type="date"
-              className="w-full border p-2 rounded"
+              className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors.due_date && <p className="text-red-500 text-sm">Due date is required</p>}
+            {errors.due_date && <p className="text-sm text-red-500 mt-1">Due date is required</p>}
           </div>
 
-          <select {...register("priority")} className="w-full border p-2 rounded">
+          <select
+            {...register("priority")}
+            className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
@@ -90,14 +86,21 @@ export default function TaskModal({
           <input
             {...register("tags")}
             placeholder="Tags (comma separated)"
-            className="w-full border p-2 rounded"
+            className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
-          <div className="flex justify-end gap-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 border rounded">
+          <div className="flex justify-end gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            >
               Cancel
             </button>
-            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition"
+            >
               {isEdit ? "Save Changes" : "Create Task"}
             </button>
           </div>

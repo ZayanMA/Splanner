@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
+@import './styles/calendar-overrides.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 

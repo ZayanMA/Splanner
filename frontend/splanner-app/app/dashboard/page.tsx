@@ -1,23 +1,44 @@
-"use client";
+'use client'
+
 import { useEffect, useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { Calendar, dateFnsLocalizer, View } from "react-big-calendar";
+import { format } from "date-fns/format";
+import { parse } from "date-fns/parse";
+import { startOfWeek } from "date-fns/startOfWeek";
+import { getDay } from "date-fns/getDay";
+import { enUS } from "date-fns/locale/en-US";
 import api from "@/lib/api";
-import TaskModal from "@/components/TaskModal"; 
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
+const locales = {
+  "en-US": enUS,
+};
+
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+});
 
 type Task = {
   id: number;
   title: string;
   due_date: string;
   priority: string;
+  tags: string[];
   completed: boolean;
+  user: number;
+  course: any;
 };
 
 export default function Dashboard() {
-  useAuth(true); // require login
-
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showCreateEditModal, setShowCreateEditModal] = useState(false);  // useState to track visibility of create / edit popup
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentView, setCurrentView] = useState<View>("month"); // default view is month
 
   useEffect(() => {
     async function fetchTasks() {
@@ -30,50 +51,42 @@ export default function Dashboard() {
         setLoading(false);
       }
     }
-
     fetchTasks();
   }, []);
 
-  if (loading) return <p className="mt-10 text-center">Loading tasks...</p>;
+  const events = tasks.map((task) => ({
+    id: task.id,
+    title: task.title,
+    start: new Date(task.due_date),
+    end: new Date(task.due_date),
+  }));
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-4">
-      <h1 className="text-3xl font-bold mb-6">Your Tasks</h1>
-      {tasks.length === 0 ? (
-        <p>No tasks found.</p>
+    <div className="max-w-5xl mx-auto mt-10 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+        Your Schedule
+      </h1>
+
+      {loading ? (
+        <p className="text-center text-gray-600 dark:text-gray-400">Loading tasks...</p>
+      ) : tasks.length === 0 ? (
+        <p className="text-center text-gray-500 dark:text-gray-400">No tasks found.</p>
       ) : (
-        <ul className="space-y-4">
-          {tasks.map(task => (
-            <li key={task.id} className="border p-4 rounded shadow-sm">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold">{task.title}</h2>
-                <span className={`px-2 py-1 rounded text-sm ${task.priority === "high" ? "bg-red-100 text-red-700" : task.priority === "medium" ? "bg-yellow-100 text-yellow-700" : "bg-green-100 text-green-700"}`}>
-                  {task.priority}
-                </span>
-              </div>
-              <p className="text-sm text-gray-600">Due: {task.due_date}</p>
-              <p className={`text-sm mt-1 ${task.completed ? "text-green-600" : "text-gray-500"}`}>
-                {task.completed ? "✅ Completed" : "❌ Not Completed"}
-              </p>
-            </li>
-          ))}
-        </ul>
+        <div className="dark:text-white">
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 600 }}
+            className="rounded-lg shadow-md bg-white dark:bg-gray-800 dark:text-white"
+            date={currentDate}
+            onNavigate={(date) => setCurrentDate(date)}
+            view={currentView}
+            onView={(view) => setCurrentView(view)}
+          />
+        </div>
       )}
-      <button
-        onClick={() => setShowCreateEditModal(true)}
-        className="fixed bottom-6 right-6 bg-blue-600 text-white w-14 h-14 rounded-full text-3xl shadow-lg hover:bg-blue-700"
-        >
-        +
-        </button>
-      {showCreateEditModal && (
-        <TaskModal
-            mode="create"
-            onClose={() => setShowCreateEditModal(false)}
-            onSuccess={(newTask) => {
-            
-            }}
-        />
-        )}
     </div>
   );
 }
