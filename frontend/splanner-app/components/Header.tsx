@@ -8,7 +8,7 @@ export default function Header() {
   const { authenticated } = useAuth();
 
   return (
-    <Navbar fluid rounded>
+    <Navbar fluid rounded className="bg-gray-200">
         <NavbarBrand href="/">
             <img src="/splanner.svg" alt="Splanner Logo" className="mr-3 h-6 sm:h-9" />
             <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white text-black">Splanner</span>
@@ -24,17 +24,21 @@ export default function Header() {
         <NavbarToggle />
         </div>
         <NavbarCollapse className="md:flex-row md:items-center md:gap-6">
-        {authenticated && (
+        
             <ul className="flex flex-col md:flex-row md:items-center md:gap-6">
-                <NavbarLink href="/dashboard">Dashboard</NavbarLink>
-                <NavbarLink href="/tasks">Tasks</NavbarLink>
-                <NavbarLink href="/courses">Courses</NavbarLink>
-                <NavbarLink href="/notes">Notes</NavbarLink>
+                {authenticated && (
+                    <>
+                    <NavbarLink href="/dashboard">Dashboard</NavbarLink>
+                    <NavbarLink href="/tasks">Tasks</NavbarLink>
+                    <NavbarLink href="/courses">Courses</NavbarLink>
+                    <NavbarLink href="/notes">Notes</NavbarLink>
+                    </>
+                )}
                 <li>
                     <DarkThemeToggle className="md:ml-4 scale-90" />
                 </li>
             </ul>
-        )}
+        
         </NavbarCollapse>
     </Navbar>
   );
