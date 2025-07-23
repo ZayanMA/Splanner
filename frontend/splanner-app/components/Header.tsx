@@ -1,6 +1,14 @@
 "use client";
 import { useAuth } from "@/hooks/useAuth";
-import { Button, DarkThemeToggle, Navbar, NavbarBrand, NavbarCollapse, NavbarLink, NavbarToggle } from "flowbite-react";
+import {
+  Button,
+  DarkThemeToggle,
+  Navbar,
+  NavbarBrand,
+  NavbarCollapse,
+  NavbarLink,
+  NavbarToggle,
+} from "flowbite-react";
 
 export default function Header() {
   const { authenticated, logout } = useAuth();
@@ -8,16 +16,23 @@ export default function Header() {
   return (
     <Navbar fluid rounded className="bg-gray-200">
       <NavbarBrand href="/">
-        <img src="/splanner.svg" alt="Splanner Logo" className="mr-3 h-6 sm:h-9" />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white text-black">Splanner</span>
+        <img
+          src="/splanner.svg"
+          alt="Splanner Logo"
+          className="mr-3 h-6 sm:h-9"
+        />
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white text-black">
+          Splanner
+        </span>
       </NavbarBrand>
 
+      {/* Right side controls */}
       <div className="flex md:order-2">
         {authenticated && (
           <Button
             onClick={logout}
             aria-label="Logout"
-            className="mr-2 dark:text-white text-black hover:bg-gray-100 bg-transparent dark:bg-transparent dark:hover:bg-gray-900"
+            className="dark:text-white text-black hover:bg-gray-100 bg-transparent dark:bg-transparent dark:hover:bg-gray-900"
           >
             <svg
               className="w-6 h-6 text-gray-800 dark:text-white"
@@ -38,9 +53,13 @@ export default function Header() {
             </svg>
           </Button>
         )}
+
+        <DarkThemeToggle className="scale-90" />
+
         <NavbarToggle />
       </div>
 
+      {/* Navbar links */}
       <NavbarCollapse className="md:flex-row md:items-center md:gap-6">
         {authenticated ? (
           <ul className="flex flex-col md:flex-row md:items-center md:gap-6">
@@ -50,10 +69,6 @@ export default function Header() {
             <NavbarLink href="/notes">Notes</NavbarLink>
           </ul>
         ) : null}
-
-        <div className={`flex items-center ${authenticated ? "md:ml-4" : "justify-center w-full"}`}>
-          <DarkThemeToggle className="scale-90" />
-        </div>
       </NavbarCollapse>
     </Navbar>
   );
