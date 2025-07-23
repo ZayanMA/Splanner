@@ -1,9 +1,16 @@
 import { useState } from "react";
 import TaskModal from "./TaskModal";
+import { CheckCircle } from "lucide-react";
+import { Task } from "@/types/task";
 
-export default function AddNewActionMenuButton() {
+interface Props {
+  onTaskCreated: (task: Task) => void;
+}
+
+export default function AddNewActionMenuButton({ onTaskCreated }: Props) {
   const [showMenu, setShowMenu] = useState(false);
   const [modalType, setModalType] = useState<null | "task" | "project">(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const openModal = (type: "task" | "project") => {
     setModalType(type);
@@ -12,7 +19,13 @@ export default function AddNewActionMenuButton() {
 
   const closeModal = () => setModalType(null);
 
-  // Staggered animation class generator for horizontal animation
+  const handleSuccess = (task: Task) => {
+    onTaskCreated(task); // <-- update parent task list
+    closeModal();
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 1500);
+  };
+
   const getButtonClass = (index: number) =>
     `fixed bottom-6 text-white shadow-lg transition-all duration-300
     transform
@@ -21,7 +34,16 @@ export default function AddNewActionMenuButton() {
 
   return (
     <div>
-      {/* Extra option buttons */}
+      {/* Floating success animation */}
+      {showSuccess && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center animate-fadeInOut">
+          <div className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full shadow-lg text-lg font-semibold transition-all">
+            <CheckCircle className="w-6 h-6 text-white" /> Task Created!
+          </div>
+        </div>
+      )}
+
+      {/* Floating buttons */}
       <button
         onClick={() => openModal("task")}
         aria-label="Create new task"
@@ -37,7 +59,7 @@ export default function AddNewActionMenuButton() {
         🗂️
       </button>
 
-      {/* Main floating button */}
+      {/* Main FAB */}
       <button
         onClick={() => setShowMenu((prev) => !prev)}
         aria-label="Open action menu"
@@ -53,7 +75,7 @@ export default function AddNewActionMenuButton() {
         <TaskModal
           mode="create"
           onClose={closeModal}
-          onSuccess={() => closeModal()}
+          onSuccess={handleSuccess}
         />
       )}
     </div>

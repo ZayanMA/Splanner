@@ -9,6 +9,7 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   refreshToken: () => Promise<string | null>;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,6 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,6 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setAccessToken(token);
       setAuthenticated(true);
     }
+    setLoading(false);
   }, []);
 
   const login = async (username: string, password: string) => {
@@ -62,7 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [logout]);
 
   return (
-    <AuthContext.Provider value={{ authenticated, accessToken, login, logout, refreshToken }}>
+    <AuthContext.Provider value={{ authenticated, accessToken, login, logout, refreshToken, loading }}>
       {children}
     </AuthContext.Provider>
   );

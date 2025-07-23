@@ -1,7 +1,8 @@
 "use client";
 import { useForm } from "react-hook-form";
 import api from "@/lib/api";
-
+import ReactDOM from "react-dom";
+import { Task } from "@/types/task";
 
 export default function TaskModal({
   mode,
@@ -48,8 +49,11 @@ export default function TaskModal({
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50">
+  return ReactDOM.createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.4)", backdropFilter: "blur(4px)" }}
+    >
       <div className="bg-white dark:bg-gray-900 text-black dark:text-white p-6 rounded-2xl w-full max-w-md shadow-xl transition-all duration-300">
         <h2 className="text-2xl font-semibold mb-6">
           {isEdit ? "Edit Task" : "Create Task"}
@@ -106,6 +110,7 @@ export default function TaskModal({
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
