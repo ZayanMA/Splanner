@@ -1,19 +1,39 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import AddNewActionMenuButton from "@/components/AddNewActionMenuButton";
 
-
+interface Task {
+  id: number;
+  title: string;
+  priority: "low" | "medium" | "high";
+  due_date: string;
+  completed: boolean;
+}
 
 export default function Dashboard() {
-  useAuth(true);
+  const { authenticated } = useAuth();
+  const router = useRouter();
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showCreateEditModal, setShowCreateEditModal] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false); // To avoid flicker
 
   useEffect(() => {
+    // If not authenticated, redirect to login
+    if (!authenticated) {
+      router.push("/login");
+    } else {
+      setAuthChecked(true);
+    }
+  }, [authenticated, router]);
+
+  useEffect(() => {
+    if (!authChecked) return; // Wait for auth check
+
     async function fetchTasks() {
       try {
         const res = await api.get("tasks/");
@@ -26,11 +46,16 @@ export default function Dashboard() {
     }
 
     fetchTasks();
-  }, []);
+  }, [authChecked]);
 
   const handleAddTask = (newTask: Task) => {
     setTasks((prev) => [...prev, newTask]);
   };
+
+  // Show nothing or a loading state if auth is not checked yet
+  if (!authChecked) {
+    return <p>Checking authentication...</p>;
+  }
 
   return (
     <div className="max-w-3xl mx-auto mt-10 px-4 sm:px-6 lg:px-8">
@@ -78,7 +103,7 @@ export default function Dashboard() {
         </ul>
       )}
 
-       <AddNewActionMenuButton/>
+      <AddNewActionMenuButton />
     </div>
   );
 }

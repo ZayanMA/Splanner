@@ -13,6 +13,29 @@
         "NODE_ENV": "development"
       },
       "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Django: Run Server",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/manage.py",
+      "args": ["runserver"],
+      "django": true,
+      "cwd": "${workspaceFolder}/backend",
+      "console": "integratedTerminal",
+      "env": {
+        "DJANGO_SETTINGS_MODULE": "splanner.settings",
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Run Backend and Frontend",
+      "configurations": [
+        "Django: Run Server",
+        "Next.js: Debug"
+      ]
     }
   ]
 }
