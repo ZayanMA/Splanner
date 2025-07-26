@@ -9,6 +9,7 @@ import {
   NavbarLink,
   NavbarToggle,
 } from "flowbite-react";
+import DarkModeToggle from "./DarkModeToggle";
 
 export default function Header() {
   const { authenticated, logout } = useAuth();
@@ -54,7 +55,7 @@ export default function Header() {
           </Button>
         )}
 
-        <DarkThemeToggle className="scale-90" />
+        <DarkModeToggle/>
 
         <NavbarToggle />
       </div>
