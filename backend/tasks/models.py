@@ -21,6 +21,7 @@ class Task(models.Model):
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)  # task can belong to a course
     title = models.CharField(max_length=255)  # name of the task
     due_date = models.DateField()  # due date for the task 2025/07/30
+    due_time = models.DateTimeField()
     priority = models.CharField(max_length=10, choices=[('low', 'Low'), ('medium', 'Medium'), ('high', 'High')])  # priority field with choices
     tags = models.JSONField(blank=True, null=True)  # json field for tags for this task e.g "homework, research"
     completed = models.BooleanField(default=False)  # boolean field for status completed true or false
