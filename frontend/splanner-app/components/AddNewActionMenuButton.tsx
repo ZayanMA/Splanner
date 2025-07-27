@@ -2,6 +2,7 @@ import { useState } from "react";
 import TaskModal from "./TaskModal";
 import { CheckCircle } from "lucide-react";
 import { Task } from "@/types/task";
+import { AnimatePresence } from "framer-motion";
 
 interface Props {
   onTaskCreated: (task: Task) => void;
@@ -71,13 +72,15 @@ export default function AddNewActionMenuButton({ onTaskCreated }: Props) {
       </button>
 
       {/* Modals */}
-      {modalType === "task" && (
-        <TaskModal
-          mode="create"
-          onClose={closeModal}
-          onSuccess={handleSuccess}
-        />
-      )}
+      <AnimatePresence>
+        {modalType === "task" && (
+          <TaskModal
+            mode="create"
+            onClose={closeModal}
+            onSuccess={handleSuccess}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

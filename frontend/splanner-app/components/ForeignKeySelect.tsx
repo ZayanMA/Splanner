@@ -1,5 +1,6 @@
 "use client";
 
+import api from "@/lib/api";
 import React, { useEffect, useState } from "react";
 
 type Option = {
@@ -11,9 +12,9 @@ interface ForeignKeySelectProps {
   label: string;
   value: string | number | null;
   onChange: (value: string | number | null) => void;
-  fetchUrl: string; // e.g., "/api/courses/"
-  getLabel?: (item: any) => string; // Optional custom label extractor
+  fetchUrl: string;
   placeholder?: string;
+  getLabel?: (item: any) => string;
   allowNull?: boolean;
 }
 
@@ -22,25 +23,25 @@ export default function ForeignKeySelect({
   value,
   onChange,
   fetchUrl,
+  placeholder = "Select...",
   getLabel = (item) => item.name || item.title || `#${item.id}`,
-  placeholder = "Select an option",
   allowNull = true,
 }: ForeignKeySelectProps) {
   const [options, setOptions] = useState<Option[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const res = await fetch(fetchUrl);
-        const data = await res.json();
+        const res = await api.get(fetchUrl);
+        const data = res.data;
         const formatted = data.map((item: any) => ({
           id: item.id,
           label: getLabel(item),
         }));
         setOptions(formatted);
-      } catch (error) {
-        console.error("Failed to fetch foreign key options:", error);
+      } catch (err) {
+        console.error("Error fetching FK options:", err);
       } finally {
         setLoading(false);
       }
@@ -53,9 +54,9 @@ export default function ForeignKeySelect({
     <div className="flex flex-col gap-1">
       <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
       <select
-        className="p-2 rounded border dark:border-gray-700 dark:bg-gray-800 dark:text-white"
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value ? Number(e.target.value) : null)}
+        className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800"
         disabled={loading}
       >
         {allowNull && <option value="">{placeholder}</option>}
