@@ -41,7 +41,7 @@ export default function TaskModal({
       due_date: initialData?.due_date || "",
       due_time: "", // handled separately
       priority: initialData?.priority || "medium",
-      course: initialData?.course || null,
+      module: initialData?.module || null,
       tags: initialData?.tags?.join(", ") || "",
     },
   });
@@ -60,7 +60,7 @@ export default function TaskModal({
       due_date: dueDate || null,
       due_time: combinedDueDateTime ? combinedDueDateTime.toISOString() : null,
       priority: data.priority || null,
-      course: data.course || null,
+      module: data.module || null,
       tags: data.tags ? data.tags.split(",").map((t: string) => t.trim()) : [],
     };
 
@@ -128,19 +128,19 @@ export default function TaskModal({
             />
           </div>
 
-          {/* Course */}
+          {/* Module */}
           <div>
             <Controller
-              name="course"
+              name="module"
               control={control}
               render={({ field }) => (
                 <ForeignKeySelect
-                  label="Course"
+                  label="Module"
                   value={field.value}
                   onChange={field.onChange}
-                  fetchUrl="courses/"
-                  placeholder="No course"
-                  getLabel={(course) => course.name}
+                  fetchUrl="modules/"
+                  placeholder="No module"
+                  getLabel={(module) => module.name}
                 />
               )}
             />

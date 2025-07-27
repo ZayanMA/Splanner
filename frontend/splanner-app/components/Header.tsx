@@ -66,7 +66,7 @@ export default function Header() {
           <ul className="flex flex-col md:flex-row md:items-center md:gap-6">
             <NavbarLink href="/dashboard">Dashboard</NavbarLink>
             <NavbarLink href="/tasks">Tasks</NavbarLink>
-            <NavbarLink href="/courses">Courses</NavbarLink>
+            <NavbarLink href="/modules">Modules</NavbarLink>
             <NavbarLink href="/notes">Notes</NavbarLink>
           </ul>
         ) : null}

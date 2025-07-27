@@ -5,7 +5,7 @@ export type Task = {
   due_time: string;
   priority: "low" | "medium" | "high";
   completed: boolean;
-  course: number;
+  module: number;
   description: string;
   tags: string[];
 };

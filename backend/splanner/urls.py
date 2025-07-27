@@ -13,7 +13,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from tasks.views import TaskViewSet
-from courses.views import CourseViewSet
+from modules.views import ModuleViewSet
 from notes.views import NoteViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from users.views import RegisterView 
@@ -21,7 +21,7 @@ from users.views import RegisterView
 
 router = DefaultRouter()
 router.register(r'tasks', TaskViewSet)
-router.register(r'courses', CourseViewSet)
+router.register(r'modules', ModuleViewSet)
 router.register(r'notes', NoteViewSet)
 
 urlpatterns = [

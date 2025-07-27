@@ -3,7 +3,7 @@
 ################################################
 # Current Version: 1.0
 # Author: ZayanMA
-# Filename: /courses/views.py
+# Filename: /modules/views.py
 ################################################
 # File history
 ################################################
@@ -11,18 +11,18 @@
 
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Course
-from .serializers import CourseSerializer
+from .models import Module
+from .serializers import ModuleSerializer
 from rest_framework.permissions import IsAuthenticated
 
 
-class CourseViewSet(viewsets.ModelViewSet):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+class ModuleViewSet(viewsets.ModelViewSet):
+    queryset = Module.objects.all()
+    serializer_class = ModuleSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Course.objects.filter(user=self.request.user)
+        return Module.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

@@ -3,15 +3,16 @@
 ################################################
 # Current Version: 1.0
 # Author: ZayanMA
-# Filename: /courses/admin.py
+# Filename: /module/serializers.py
 ################################################
 # File history
 ################################################
 # 1.0   ZayanMA     initial commit
 
+from rest_framework import serializers
+from .models import Module
 
-from django.contrib import admin
-from .models import Course
-
-# Register your models here.
-admin.site.register(Course)
+class ModuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Module
+        fields = '__all__'

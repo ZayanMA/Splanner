@@ -3,7 +3,7 @@
 ################################################
 # Current Version: 1.0
 # Author: ZayanMA
-# Filename: /courses/models.py
+# Filename: /modules/models.py
 ################################################
 # File history
 ################################################
@@ -15,9 +15,9 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class Course(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="courses")  # course can't exist without user so cascade
-    title = models.CharField(max_length=100)  # name of the course e.g "COMP2203"
+class Module(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="modules")  # module can't exist without user so cascade
+    title = models.CharField(max_length=100)  # name of the module e.g "COMP2203"
 
     def __str__(self):
         return self.title
@@ -29,7 +29,7 @@ class Lecture(models.Model):
         WEEKLY = "weekly", "Weekly"
         BIWEEKLY = "biweekly", "Biweekly"
 
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="lectures")
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name="lectures")
     title = models.CharField(max_length=255)
 
     schedule_type = models.CharField(
@@ -55,7 +55,7 @@ class Lecture(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    location = models.CharField(max_length=100, blank = True, null = True)  # location of the course e.g "Building 16"
+    location = models.CharField(max_length=100, blank = True, null = True)  # location of the module e.g "Building 16"
 
     def clean(self):
         from django.core.exceptions import ValidationError
@@ -74,4 +74,4 @@ class Lecture(models.Model):
             raise ValidationError("Start time must be before end time.")
 
     def __str__(self):
-        return f"{self.title} ({self.course.name})"
+        return f"{self.title} ({self.module.name})"
